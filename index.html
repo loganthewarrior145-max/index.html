@@ -6,146 +6,507 @@
     <title>Quantum Darknet Core</title>
     <style>
         body { background-color: #0d1117; color: #58a6ff; font-family: 'Courier New', Courier, monospace; padding: 20px; }
-        .container { max-width: 800px; margin: 0 auto; border: 1px solid #30363d; padding: 20px; background-color: #161b22; box-shadow: 0 0 15px rgba(0,255,0,0.1); }
-        h1, h2 { color: #2ea44f; border-bottom: 1px solid #30363d; padding-bottom: 5px; }
+        .container { max-width: 1100px; margin: 0 auto; border: 1px solid #30363d; padding: 20px; background-color: #161b22; box-shadow: 0 0 15px rgba(0,255,0,0.1); }
+        h1, h2, h3 { color: #2ea44f; border-bottom: 1px solid #30363d; padding-bottom: 5px; margin-top: 20px; }
         .currency-box { margin-bottom: 20px; padding: 10px; background: #0d1117; border-left: 4px solid #2ea44f; }
-        .btn { background-color: #21262d; color: #c9d1d9; border: 1px solid #30363d; padding: 10px 15px; cursor: pointer; font-family: inherit; margin: 5px; }
+        
+        /* Event Ticker Styles */
+        .ticker-box { margin-bottom: 20px; padding: 12px; background: #0d1117; border: 1px dashed #8b949e; text-align: center; font-weight: bold; min-height: 20px; transition: all 0.3s ease; }
+        .event-neutral { color: #8b949e; border-color: #30363d; }
+        .event-positive { color: #2ea44f; border-color: #2ea44f; box-shadow: inset 0 0 10px rgba(46,164,79,0.2); }
+        .event-negative { color: #f85149; border-color: #da3633; box-shadow: inset 0 0 10px rgba(218,54,51,0.2); }
+
+        .btn { background-color: #21262d; color: #c9d1d9; border: 1px solid #30363d; padding: 10px 15px; cursor: pointer; font-family: inherit; margin: 5px 0; width: 100%; text-align: left; }
         .btn:hover { background-color: #30363d; color: #fff; border-color: #8b949e; }
-        .btn-main { background-color: #238636; color: white; font-weight: bold; font-size: 1.1em; width: 100%; border: none; padding: 15px; margin: 10px 0; }
+        .btn:disabled { background-color: #161b22; color: #484f58; border-color: #21262d; cursor: not-allowed; }
+        .btn-main { background-color: #238636; color: white; font-weight: bold; font-size: 1.1em; width: 100%; border: none; padding: 15px; margin: 10px 0; cursor: pointer;}
         .btn-main:hover { background-color: #2ea44f; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
         .section { border: 1px solid #30363d; padding: 15px; background: #0d1117; }
         .progress-bar { width: 100%; background-color: #21262d; border: 1px solid #30363d; height: 12px; margin-top: 5px; }
         .progress-fill { width: 0%; height: 100%; background-color: #2ea44f; transition: width 0.1s linear; }
+        .prestige-btn { background-color: #8957e5; color: white; border: none; }
+        .prestige-btn:hover { background-color: #a371f7; }
+        .shop-btn { background-color: #da3633; color: white; border: none; }
+        .shop-btn:hover { background-color: #f85149; }
+        .shop-btn:disabled { background-color: #21262d; color: #484f58; }
+        .shop-title { color: #f85149 !important; border-color: #da3633 !important; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>// INFINITE QUANTUM DARKNET CORE</h1>
         
+        <!-- Live Random Event Ticker -->
+        <div id="ticker" class="ticker-box event-neutral">
+            SYSTEM STATUS: OPERATIONAL // LISTENING FOR PACKETS...
+        </div>
+
         <div class="currency-box">
             <div>Bits Available: <span id="bits">0</span></div>
-            <div>Net Generation: <span id="ips">0.0</span> Bits/sec</div>
-            <div>Quantum Data (QD): <span id="qd">0</span> [Prestige Lvl 1]</div>
-            <div>Dark Matter (DM): <span id="dm">0</span> [Prestige Lvl 2]</div>
+            <div>Net Generation: <span id="ips">0.0</span> Bits/sec <span id="event-ips-mod" style="color:#2ea44f; font-weight:bold;"></span></div>
+            <div>Quantum Data (QD): <span id="qd">0</span> (Multiplier: x<span id="qd-mult">1.0</span>)</div>
+            <div>Dark Matter (DM): <span id="dm">0</span> (Global Boost: +<span id="dm-boost">0</span>%)</div>
         </div>
 
-        <button class="btn-main" onclick="manualClick()">INJECT EXPLOIT PACKET (+<span id="clickPower">1</span> Bits)</button>
-        
-        <div class="grid">
-            <!-- Active Target Node -->
+        <button class="btn-main" onclick="mineBits()">Execute Manual Hacking Sequence (+<span id="click-power">1</span> Bits)</button>
+
+        <!-- Upgrades Core Matrix -->
+        <h2>// CODE COMPLIANCE ENGINE (SCRIPT UPGRADES)</h2>
+        <div class="grid-3">
+            <!-- Column 1: Extraction -->
             <div class="section">
-                <h2>Active Node Target</h2>
-                <div id="target-name" style="font-weight:bold;">Local Smart Fridge</div>
-                <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
-                <div style="margin-top: 5px; font-size: 0.85em;">Reward: <span id="target-reward">1</span> Bits</div>
-                <div style="margin-top: 15px;">
-                    <button class="btn" onclick="switchTarget(0)">Fridge</button>
-                    <button class="btn" onclick="switchTarget(1)">Traffic Grid</button>
-                    <button class="btn" onclick="switchTarget(2)">Mainframe</button>
-                </div>
+                <h3>[ Extraction Scripts ]</h3>
+                <button class="btn" id="upg-click" onclick="buyUpgrade('click')">
+                    Optimize Multi-Threading<br>
+                    Cost: <span id="cost-click">15</span> | Lvl: <span id="lvl-click">0</span>
+                </button>
+                <button class="btn" id="upg-overflow" onclick="buyUpgrade('overflow')">
+                    Buffer Overflow Exploit<br>
+                    Cost: <span id="cost-overflow">100</span> | Lvl: <span id="lvl-overflow">0</span>
+                </button>
+                <button class="btn" id="upg-injection" onclick="buyUpgrade('injection')">
+                    SQL Injection Daemon<br>
+                    Cost: <span id="cost-injection">400</span> | Lvl: <span id="lvl-injection">0</span>
+                </button>
+                <button class="btn" id="upg-zeroDay" onclick="buyUpgrade('zeroDay')">
+                    Zero-Day Rootkit Exploit<br>
+                    Cost: <span id="cost-zeroDay">2500</span> | Lvl: <span id="lvl-zeroDay">0</span>
+                </button>
+                <button class="btn" id="upg-proxy" onclick="buyUpgrade('proxy')">
+                    Dynamic Proxy Tunneling<br>
+                    Cost: <span id="cost-proxy">15000</span> | Lvl: <span id="lvl-proxy">0</span>
+                </button>
             </div>
 
-            <!-- System Software Upgrades -->
+            <!-- Column 2: Multipliers -->
             <div class="section">
-                <h2>Script Upgrades</h2>
-                <button class="btn" onclick="buyUpgrade('cpu')">Overclock CPU (<span id="cpu-lvl">0</span>)<br>Cost: <span id="cpu-cost">10</span> Bits</button>
-                <button class="btn" onclick="buyUpgrade('botnet')">IoT Botnet (<span id="botnet-lvl">0</span>)<br>Cost: <span id="botnet-cost">50</span> Bits</button>
+                <h3>[ Multiplier Matrix ]</h3>
+                <button class="btn" id="upg-ai" onclick="buyUpgrade('ai')">
+                    Neural Network Crawler<br>
+                    Cost: <span id="cost-ai">1000</span> | Lvl: <span id="lvl-ai">0</span>
+                </button>
+                <button class="btn" id="upg-overclock" onclick="buyUpgrade('overclock')">
+                    Core Heat Sync Overclock<br>
+                    Cost: <span id="cost-overclock">5000</span> | Lvl: <span id="lvl-overclock">0</span>
+                </button>
+                <button class="btn" id="upg-botnet" onclick="buyUpgrade('botnet')">
+                    Botnet Synchronization<br>
+                    Cost: <span id="cost-botnet">30000</span> | Lvl: <span id="lvl-botnet">0</span>
+                </button>
+                <button class="btn" id="upg-worm" onclick="buyUpgrade('worm')">
+                    Self-Replicating Worm v2<br>
+                    Cost: <span id="cost-worm">150000</span> | Lvl: <span id="lvl-worm">0</span>
+                </button>
+                <button class="btn" id="upg-brute" onclick="buyUpgrade('brute')">
+                    Brute-Force Farm Rig<br>
+                    Cost: <span id="cost-brute">800000</span> | Lvl: <span id="lvl-brute">0</span>
+                </button>
+            </div>
+
+            <!-- Column 3: Prestige Drivers -->
+            <div class="section">
+                <h3>[ Prestige Synergies ]</h3>
+                <button class="btn" id="upg-entangle" onclick="buyUpgrade('entangle')">
+                    Quantum Entanglement<br>
+                    Cost: <span id="cost-entangle">50000</span> | Lvl: <span id="lvl-entangle">0</span>
+                </button>
+                <button class="btn" id="upg-compress" onclick="buyUpgrade('compress')">
+                    Data Stream Compressor<br>
+                    Cost: <span id="cost-compress">400000</span> | Lvl: <span id="lvl-compress">0</span>
+                </button>
+                <button class="btn" id="upg-darkDrive" onclick="buyUpgrade('darkDrive')">
+                    Dark Matter Storage Box<br>
+                    Cost: <span id="cost-darkDrive">2500000</span> | Lvl: <span id="lvl-darkDrive">0</span>
+                </button>
             </div>
         </div>
 
-        <!-- Prestige Section -->
-        <div class="section" style="margin-top: 15px;">
-            <h2>Evolutionary Realignment</h2>
-            <button class="btn" onclick="prestigeLvl1()">Compress Frame to Quantum Data<br>(Gain +<span id="qd-gain">0</span> QD. Requires 1,000 Bits)</button>
-            <button class="btn" onclick="prestigeLvl2()">Collapse Frame to Dark Matter<br>(Gain +<span id="dm-gain">0</span> DM. Requires 1,000 QD)</button>
+        <!-- Black Market & Automation Grid -->
+        <div class="grid" style="margin-top:20px;">
+            <!-- Automation Nodes Section -->
+            <div class="section">
+                <h2>// AUTOMATION NODES</h2>
+                <div class="progress-bar"><div class="progress-fill" id="node1-progress"></div></div>
+                <button class="btn" id="node-miner" onclick="buyUpgrade('miner')">
+                    Deploy Basic Botnet Nodes<br>
+                    Cost: <span id="cost-miner">50</span> Bits | Count: <span id="lvl-miner">0</span> (+<span id="gen-miner">0</span>/s)
+                </button>
+                
+                <div class="progress-bar"><div class="progress-fill" id="node2-progress"></div></div>
+                <button class="btn" id="node-mainframe" onclick="buyUpgrade('mainframe')">
+                    Hijack Quantum Mainframes<br>
+                    Cost: <span id="cost-mainframe">500</span> Bits | Count: <span id="lvl-mainframe">0</span> (+<span id="gen-mainframe">0</span>/s)
+                </button>
+
+                <h2>// QUANTUM TRANSCENDENCE</h2>
+                <h3>Layer 1: Data Condensation</h3>
+                <button class="btn prestige-btn" id="btn-qd" onclick="prestigeLayer1()">
+                    Condense into <span id="pending-qd">0</span> QD<br>(Requires 10,000 Bits)
+                </button>
+                <h3 style="margin-top:15px;">Layer 2: Matter Collapse</h3>
+                <button class="btn prestige-btn" id="btn-dm" onclick="prestigeLayer2()">
+                    Synthesize <span id="pending-dm">0</span> DM<br>(Requires 100 QD)
+                </button>
+            </div>
+
+            <!-- Darknet Shop Panel Section -->
+            <div class="section" style="border-color: #da3633;">
+                <h2 class="shop-title">// BLACK MARKET ONION PERKS</h2>
+                <p style="color: #8b949e; font-size: 0.9em;">Purchases here use Prestige currencies and last through all resets.</p>
+                
+                <button class="btn shop-btn" id="shop-autoClick" onclick="buyShopItem('autoClick')">
+                    [QD] Auto-Hacking Daemon<br>
+                    Clicks automatically 5x/sec.<br>
+                    Cost: <span id="cost-shop-autoClick">5</span> QD | Lvl: <span id="lvl-shop-autoClick">0</span>
+                </button>
+
+                <button class="btn shop-btn" id="shop-keepNodes" onclick="buyShopItem('keepNodes')">
+                    [QD] Persistent Protocols<br>
+                    Keep 15% of botnets/mainframes on prestige.<br>
+                    Cost: <span id="cost-shop-keepNodes">25</span> QD | Lvl: <span id="lvl-shop-keepNodes">0</span>
+                </button>
+
+                <button class="btn shop-btn" id="shop-bitMultiplier" onclick="buyShopItem('bitMultiplier')">
+                    [QD] Deep Web Infiltration<br>
+                    Global permanent Bits yield multiplier (x1.5/lvl).<br>
+                    Cost: <span id="cost-shop-bitMultiplier">50</span> QD | Lvl: <span id="lvl-shop-bitMultiplier">0</span>
+                </button>
+
+                <button class="btn shop-btn" id="shop-dmEfficiency" onclick="buyShopItem('dmEfficiency')">
+                    [DM] Singularity Catalyst<br>
+                    Reduces DM production requirement threshold by 10%.<br>
+                    Cost: <span id="cost-shop-dmEfficiency">2</span> DM | Lvl: <span id="lvl-shop-dmEfficiency">0</span>
+                </button>
+            </div>
         </div>
     </div>
 
     <script>
         let game = {
-            bits: 0, totalBits: 0, qd: 0, dm: 0,
-            clickPower: 1, progress: 0, activeTarget: 0,
-            upgrades: { cpu: { lvl: 0, base: 10, scale: 1.5 }, botnet: { lvl: 0, base: 50, scale: 1.6 } }
+            bits: 0,
+            qd: 0,
+            dm: 0,
+            upgrades: {
+                click: { lvl: 0, baseCost: 15, costMult: 1.15 },
+                overflow: { lvl: 0, baseCost: 100, costMult: 1.2 },
+                ai: { lvl: 0, baseCost: 1000, costMult: 1.3 },
+                miner: { lvl: 0, baseCost: 50, costMult: 1.15, power: 1 },
+                mainframe: { lvl: 0, baseCost: 500, costMult: 1.25, power: 10 },
+                injection: { lvl: 0, baseCost: 400, costMult: 1.22 },    
+                zeroDay: { lvl: 0, baseCost: 2500, costMult: 1.28 },    
+                proxy: { lvl: 0, baseCost: 15000, costMult: 1.35 },     
+                overclock: { lvl: 0, baseCost: 5000, costMult: 1.25 },  
+                botnet: { lvl: 0, baseCost: 30000, costMult: 1.3 },     
+                worm: { lvl: 0, baseCost: 150000, costMult: 1.32 },     
+                brute: { lvl: 0, baseCost: 800000, costMult: 1.4 },     
+                entangle: { lvl: 0, baseCost: 50000, costMult: 1.45 },  
+                compress: { lvl: 0, baseCost: 400000, costMult: 1.5 },   
+                darkDrive: { lvl: 0, baseCost: 2500000, costMult: 1.6 }  
+            },
+            shop: {
+                autoClick: { lvl: 0, cost: 5, currency: 'qd', scale: 2 },
+                keepNodes: { lvl: 0, cost: 25, currency: 'qd', scale: 2.5 },
+                bitMultiplier: { lvl: 0, cost: 50, currency: 'qd', scale: 3 },
+                dmEfficiency: { lvl: 0, cost: 2, currency: 'dm', scale: 4 }
+            }
         };
 
-        const targets = [
-            { name: "Local Smart Fridge", reward: 1, speed: 3 },
-            { name: "Traffic Control Grid", reward: 25, speed: 10 },
-            { name: "National Bank Mainframe", reward: 500, speed: 45 }
+        // Event Multipliers State System
+        let eventGlobalSpeedModifier = 1.0;
+        let eventTimerRemaining = 0;
+
+        let p1Progress = 0, p2Progress = 0;
+
+        function getClickPower() {
+            let base = 1 + game.upgrades.click.lvl + (game.upgrades.injection.lvl * 3) + (game.upgrades.zeroDay.lvl * 25);
+            let overflowBonus = 1 + (game.upgrades.overflow.lvl * 0.25);
+            let qdEff = 0.1 + game.upgrades.entangle.lvl * 0.02;
+            let qdMultiplier = 1 + (game.qd * qdEff); 
+            let dmEff = 0.05 + game.upgrades.darkDrive.lvl * 0.01;
+            let dmMultiplier = 1 + (game.dm * dmEff);
+            let permanentShopMult = Math.pow(1.5, game.shop.bitMultiplier.lvl);
+            
+            return Math.floor(base * overflowBonus * qdMultiplier * dmMultiplier * permanentShopMult * eventGlobalSpeedModifier);
+        }
+
+        function getBitsPerSec() {
+            let minerPower = game.upgrades.miner.power + (game.upgrades.botnet.lvl * 0.5);
+            let mainframePower = game.upgrades.mainframe.power + (game.upgrades.worm.lvl * 6);
+
+            let minerGen = game.upgrades.miner.lvl * minerPower;
+            let mainframeGen = game.upgrades.mainframe.lvl * mainframePower;
+            let proxyBonus = game.upgrades.proxy.lvl * (getClickPower() * 0.1);
+            
+            let aiBonus = 1 + (game.upgrades.ai.lvl * 0.5);
+            let clockBonus = 1 + (game.upgrades.overclock.lvl * 0.2);
+            let bruteBonus = Math.pow(1.15, game.upgrades.brute.lvl);
+            
+            let qdEff = 0.1 + game.upgrades.entangle.lvl * 0.02;
+            let qdMultiplier = 1 + (game.qd * qdEff);
+            let dmEff = 5 + game.upgrades.darkDrive.lvl * 1;
+            let dmMultiplier = 1 + (game.dm * (dmEff/100));
+            
+            let permanentShopMult = Math.pow(1.5, game.shop.bitMultiplier.lvl);
+
+            let totalBase = (minerGen + mainframeGen + proxyBonus) * aiBonus * clockBonus * bruteBonus;
+            return totalBase * qdMultiplier * dmMultiplier * permanentShopMult * eventGlobalSpeedModifier;
+        }
+
+        function getUpgradeCost(key) {
+            let upg = game.upgrades[key];
+            return Math.floor(upg.baseCost * Math.pow(upg.costMult, upg.lvl));
+        }
+
+        function mineBits() {
+            game.bits += getClickPower();
+            updateUI();
+        }
+
+        function buyUpgrade(key) {
+            let cost = getUpgradeCost(key);
+            if (game.bits >= cost) {
+                game.bits -= cost;
+                game.upgrades[key].lvl++;
+                updateUI();
+            }
+        }
+
+        function buyShopItem(itemKey) {
+            let item = game.shop[itemKey];
+            if (game[item.currency] >= item.cost) {
+                game[item.currency] -= item.cost;
+                item.lvl++;
+                item.cost = Math.floor(item.cost * item.scale);
+                updateUI();
+            }
+        }
+
+        function getPendingQD() {
+            let reqDiv = 10000 / (1 + game.upgrades.compress.lvl * 0.15);
+            if (game.bits < reqDiv) return 0;
+            return Math.floor(Math.sqrt(game.bits / reqDiv));
+        }
+
+        function getPendingDM() {
+            let reqDiv = 100 * (1 - (game.shop.dmEfficiency.lvl * 0.10));
+            if (reqDiv < 10) reqDiv = 10; 
+            if (game.qd < reqDiv) return 0;
+            return Math.floor(Math.sqrt(game.qd / reqDiv));
+        }
+
+        function prestigeLayer1() {
+            let pending = getPendingQD();
+            if (pending >= 1) {
+                game.qd += pending;
+                game.bits = 0;
+                resetStandardUpgrades();
+                updateUI();
+            }
+        }
+
+        function prestigeLayer2() {
+            let pending = getPendingDM();
+            if (pending >= 1) {
+                game.dm += pending;
+                game.qd = 0;
+                game.bits = 0;
+                resetStandardUpgrades();
+                updateUI();
+            }
+        }
+
+        function resetStandardUpgrades() {
+            let keepRatio = game.shop.keepNodes.lvl * 0.15;
+            game.upgrades.miner.lvl = Math.floor(game.upgrades.miner.lvl * keepRatio);
+            game.upgrades.mainframe.lvl = Math.floor(game.upgrades.mainframe.lvl * keepRatio);
+
+            for (let key in game.upgrades) {
+                if(key !== 'miner' && key !== 'mainframe') {
+                    game.upgrades[key].lvl = 0;
+                }
+            }
+        }
+
+        // Ticker Logic Array Engine
+        const eventsList = [
+            {
+                text: "DEEP WEB MARKET SURGE: Global mining production doubled!",
+                type: "positive",
+                duration: 15,
+                execute: () => { eventGlobalSpeedModifier = 2.0; }
+            },
+            {
+                text: "COMPROMISED COLD WALLET INBOUND: Instant bounty payout secured!",
+                type: "positive",
+                duration: 0,
+                execute: () => { game.bits += Math.max(500, getBitsPerSec() * 20); }
+            },
+            {
+                text: "QUANTUM INTERFERENCE SYNCING: Speeding up processes by 50%!",
+                type: "positive",
+                duration: 20,
+                execute: () => { eventGlobalSpeedModifier = 1.5; }
+            },
+            {
+                text: "FBI CYBER RAID WARNING: Infrastructure clocks dropped by half to hide packets!",
+                type: "negative",
+                duration: 12,
+                execute: () => { eventGlobalSpeedModifier = 0.5; }
+            },
+            {
+                text: "MALWARE INTRUSION ALERT: Core corrupted. Lost 15% of unstable Bits!",
+                type: "negative",
+                duration: 0,
+                execute: () => { game.bits = Math.floor(game.bits * 0.85); }
+            }
         ];
 
-        function getCost(id) { return Math.floor(game.upgrades[id].base * Math.pow(game.upgrades[id].scale, game.upgrades[id].lvl)); }
-        function getIPS() { return (game.upgrades.botnet.lvl * 1.5) * (1 + game.qd * 0.5) * (1 + game.dm * 5); }
-
-        function manualClick() {
-            let reward = game.clickPower * (1 + game.qd * 0.5) * (1 + game.dm * 5);
-            game.bits += reward; game.totalBits += reward; updateUI();
-        }
-
-        function buyUpgrade(id) {
-            let cost = getCost(id);
-            if (game.bits >= cost) {
-                game.bits -= cost; game.upgrades[id].lvl++;
-                if (id === 'cpu') game.clickPower = 1 + game.upgrades.cpu.lvl * 2;
-                updateUI();
+        function triggerRandomEvent() {
+            let randomEvent = eventsList[Math.floor(Math.random() * eventsList.length)];
+            let tickerElem = document.getElementById('ticker');
+            
+            // Set styles dynamically
+            tickerElem.className = "ticker-box event-" + randomEvent.type;
+            
+            if (randomEvent.duration > 0) {
+                eventGlobalSpeedModifier = 1.0; 
+                randomEvent.execute();
+                eventTimerRemaining = randomEvent.duration;
+                tickerElem.innerText = `EVENT: ${randomEvent.text} [${eventTimerRemaining}s]`;
+            } else {
+                randomEvent.execute();
+                tickerElem.innerText = `INSTANT EVENT: ${randomEvent.text}`;
+                setTimeout(resetTickerUI, 4000); // clear visual state flash alert
             }
         }
 
-        function switchTarget(idx) { game.activeTarget = idx; game.progress = 0; updateUI(); }
-
-        function prestigeLvl1() {
-            if (game.bits >= 1000) {
-                game.qd += Math.floor(Math.log10(game.bits / 100));
-                game.bits = 0; game.clickPower = 1; game.upgrades.cpu.lvl = 0; game.upgrades.botnet.lvl = 0;
-                updateUI();
-            }
-        }
-
-        function prestigeLvl2() {
-            if (game.qd >= 1000) {
-                game.dm += Math.floor(game.qd / 1000);
-                game.bits = 0; game.qd = 0; game.clickPower = 1; game.upgrades.cpu.lvl = 0; game.upgrades.botnet.lvl = 0;
-                updateUI();
+        function resetTickerUI() {
+            if (eventTimerRemaining <= 0) {
+                eventGlobalSpeedModifier = 1.0;
+                let tickerElem = document.getElementById('ticker');
+                tickerElem.className = "ticker-box event-neutral";
+                tickerElem.innerText = "SYSTEM STATUS: OPERATIONAL // LISTENING FOR PACKETS...";
             }
         }
 
         function updateUI() {
-            document.getElementById("bits").innerText = Math.floor(game.bits).toLocaleString();
-            document.getElementById("ips").innerText = getIPS().toFixed(1);
-            document.getElementById("qd").innerText = game.qd;
-            document.getElementById("dm").innerText = game.dm;
-            document.getElementById("clickPower").innerText = (game.clickPower * (1 + game.qd * 0.5) * (1 + game.dm * 5)).toFixed(0);
+            document.getElementById('bits').innerText = Math.floor(game.bits).toLocaleString();
+            document.getElementById('ips').innerText = getBitsPerSec().toFixed(1);
+            document.getElementById('qd').innerText = game.qd.toLocaleString();
             
-            document.getElementById("cpu-lvl").innerText = game.upgrades.cpu.lvl;
-            document.getElementById("cpu-cost").innerText = getCost('cpu').toLocaleString();
-            document.getElementById("botnet-lvl").innerText = game.upgrades.botnet.lvl;
-            document.getElementById("botnet-cost").innerText = getCost('botnet').toLocaleString();
+            let qdEff = 0.1 + game.upgrades.entangle.lvl * 0.02;
+            document.getElementById('qd-mult').innerText = (1 + game.qd * qdEff).toFixed(1);
+            
+            document.getElementById('dm').innerText = game.dm.toLocaleString();
+            let dmEff = 5 + game.upgrades.darkDrive.lvl * 1;
+            document.getElementById('dm-boost').innerText = (game.dm * dmEff);
+            document.getElementById('click-power').innerText = getClickPower().toLocaleString();
 
-            let t = targets[game.activeTarget];
-            document.getElementById("target-name").innerText = t.name;
-            document.getElementById("target-reward").innerText = (t.reward * (1 + game.qd * 0.5) * (1 + game.dm * 5)).toFixed(0);
-            
-            document.getElementById("qd-gain").innerText = game.bits >= 1000 ? Math.floor(Math.log10(game.bits / 100)) : 0;
-            document.getElementById("dm-gain").innerText = game.qd >= 1000 ? Math.floor(game.qd / 1000) : 0;
+            // Handle displaying current modifier state next to generation value text
+            let modText = document.getElementById('event-ips-mod');
+            if (eventGlobalSpeedModifier > 1.0) {
+                modText.innerText = ` (x${eventGlobalSpeedModifier} Boosted!)`;
+                modText.style.color = "#2ea44f";
+            } else if (eventGlobalSpeedModifier < 1.0) {
+                modText.innerText = ` (x${eventGlobalSpeedModifier} Throttled!)`;
+                modText.style.color = "#f85149";
+            } else {
+                modText.innerText = "";
+            }
+
+            for (let key in game.upgrades) {
+                let cost = getUpgradeCost(key);
+                let costElem = document.getElementById(`cost-${key}`);
+                let lvlElem = document.getElementById(`lvl-${key}`);
+                if (costElem) costElem.innerText = cost.toLocaleString();
+                if (lvlElem) lvlElem.innerText = game.upgrades[key].lvl;
+                
+                let btnId = key === 'miner' || key === 'mainframe' ? `node-${key}` : `upg-${key}`;
+                let btnElem = document.getElementById(btnId);
+                if (btnElem) btnElem.disabled = game.bits < cost;
+            }
+
+            for (let key in game.shop) {
+                let item = game.shop[key];
+                document.getElementById(`cost-shop-${key}`).innerText = item.cost.toLocaleString();
+                document.getElementById(`lvl-shop-${key}`).innerText = item.lvl;
+                document.getElementById(`shop-${key}`).disabled = game[item.currency] < item.cost;
+            }
+
+            let minerPower = game.upgrades.miner.power + (game.upgrades.botnet.lvl * 0.5);
+            let mainframePower = game.upgrades.mainframe.power + (game.upgrades.worm.lvl * 6);
+            let aiBonus = 1 + (game.upgrades.ai.lvl * 0.5);
+            let clockBonus = 1 + (game.upgrades.overclock.lvl * 0.2);
+            let bruteBonus = Math.pow(1.15, game.upgrades.brute.lvl);
+            let totalMult = aiBonus * clockBonus * bruteBonus * (1 + game.qd * qdEff) * (1 + game.dm * (dmEff/100)) * Math.pow(1.5, game.shop.bitMultiplier.lvl) * eventGlobalSpeedModifier;
+
+            document.getElementById('gen-miner').innerText = (minerPower * totalMult).toFixed(1);
+            document.getElementById('gen-mainframe').innerText = (mainframePower * totalMult).toFixed(1);
+
+            let pQD = getPendingQD();
+            document.getElementById('pending-qd').innerText = pQD.toLocaleString();
+            document.getElementById('btn-qd').disabled = pQD < 1;
+
+            let pDM = getPendingDM();
+            document.getElementById('pending-dm').innerText = pDM.toLocaleString();
+            document.getElementById('btn-dm').disabled = pDM < 1;
         }
 
-        // Main game execution loop (30 Frames Per Second)
+        // Clock Cycle Engine
+        let internalClock = 0;
+        let eventRollClock = 0;
+
         setInterval(() => {
-            let ips = getIPS();
-            game.bits += ips / 30; game.totalBits += ips / 30;
+            let bps = getBitsPerSec();
+            game.bits += bps / 10;
             
-            let t = targets[game.activeTarget];
-            game.progress += (1 / 30);
-            if (game.progress >= t.speed) {
-                game.progress = 0;
-                let reward = t.reward * (1 + game.qd * 0.5) * (1 + game.dm * 5);
-                game.bits += reward; game.totalBits += reward;
+            internalClock += 100;
+            if (internalClock >= 200) { 
+                internalClock = 0;
+                if (game.shop.autoClick.lvl > 0) {
+                    game.bits += (getClickPower() * game.shop.autoClick.lvl);
+                }
+            }
+
+            // Timed Event Countdown Tracker Running at 1-Second Intervals
+            eventRollClock += 100;
+            if (eventRollClock >= 1000) {
+                eventRollClock = 0;
+                if (eventTimerRemaining > 0) {
+                    eventTimerRemaining--;
+                    let currentText = document.getElementById('ticker').innerText.split('[')[0];
+                    document.getElementById('ticker').innerText = `${currentText} [${eventTimerRemaining}s]`;
+                    if (eventTimerRemaining <= 0) resetTickerUI();
+                }
             }
             
-            document.getElementById("progress-fill").style.width = (game.progress / t.speed * 100) + "%";
+            if(game.upgrades.miner.lvl > 0) {
+                p1Progress += 10 * eventGlobalSpeedModifier;
+                if(p1Progress >= 100) p1Progress = 0;
+                document.getElementById('node1-progress').style.width = p1Progress + '%';
+            } else { document.getElementById('node1-progress').style.width = '0%'; }
+
+            if(game.upgrades.mainframe.lvl > 0) {
+                p2Progress += 4 * eventGlobalSpeedModifier;
+                if(p2Progress >= 100) p2Progress = 0;
+                document.getElementById('node2-progress').style.width = p2Progress + '%';
+            } else { document.getElementById('node2-progress').style.width = '0%'; }
+
             updateUI();
-        }, 1000 / 30);
+        }, 100);
+
+        // Periodically spawn random events over time (Rolls random duration from 30s to 45s)
+        function queueNextEvent() {
+            let nextRoll = Math.floor(Math.random() * (45000 - 30000 + 1)) + 30000;
+            setTimeout(() => {
+                triggerRandomEvent();
+                queueNextEvent();
+            }, nextRoll);
+        }
+        queueNextEvent(); // Initialize Event Loop
     </script>
 </body>
 </html>
+
