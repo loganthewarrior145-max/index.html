@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Darknet Core</title>
+    <style>
+        body { background-color: #0d1117; color: #58a6ff; font-family: 'Courier New', Courier, monospace; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; border: 1px solid #30363d; padding: 20px; background-color: #161b22; box-shadow: 0 0 15px rgba(0,255,0,0.1); }
+        h1, h2 { color: #2ea44f; border-bottom: 1px solid #30363d; padding-bottom: 5px; }
+        .currency-box { margin-bottom: 20px; padding: 10px; background: #0d1117; border-left: 4px solid #2ea44f; }
+        .btn { background-color: #21262d; color: #c9d1d9; border: 1px solid #30363d; padding: 10px 15px; cursor: pointer; font-family: inherit; margin: 5px; }
+        .btn:hover { background-color: #30363d; color: #fff; border-color: #8b949e; }
+        .btn-main { background-color: #238636; color: white; font-weight: bold; font-size: 1.1em; width: 100%; border: none; padding: 15px; margin: 10px 0; }
+        .btn-main:hover { background-color: #2ea44f; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .section { border: 1px solid #30363d; padding: 15px; background: #0d1117; }
+        .progress-bar { width: 100%; background-color: #21262d; border: 1px solid #30363d; height: 12px; margin-top: 5px; }
+        .progress-fill { width: 0%; height: 100%; background-color: #2ea44f; transition: width 0.1s linear; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>// INFINITE QUANTUM DARKNET CORE</h1>
+        
+        <div class="currency-box">
+            <div>Bits Available: <span id="bits">0</span></div>
+            <div>Net Generation: <span id="ips">0.0</span> Bits/sec</div>
+            <div>Quantum Data (QD): <span id="qd">0</span> [Prestige Lvl 1]</div>
+            <div>Dark Matter (DM): <span id="dm">0</span> [Prestige Lvl 2]</div>
+        </div>
+
+        <button class="btn-main" onclick="manualClick()">INJECT EXPLOIT PACKET (+<span id="clickPower">1</span> Bits)</button>
+        
+        <div class="grid">
+            <!-- Active Target Node -->
+            <div class="section">
+                <h2>Active Node Target</h2>
+                <div id="target-name" style="font-weight:bold;">Local Smart Fridge</div>
+                <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+                <div style="margin-top: 5px; font-size: 0.85em;">Reward: <span id="target-reward">1</span> Bits</div>
+                <div style="margin-top: 15px;">
+                    <button class="btn" onclick="switchTarget(0)">Fridge</button>
+                    <button class="btn" onclick="switchTarget(1)">Traffic Grid</button>
+                    <button class="btn" onclick="switchTarget(2)">Mainframe</button>
+                </div>
+            </div>
+
+            <!-- System Software Upgrades -->
+            <div class="section">
+                <h2>Script Upgrades</h2>
+                <button class="btn" onclick="buyUpgrade('cpu')">Overclock CPU (<span id="cpu-lvl">0</span>)<br>Cost: <span id="cpu-cost">10</span> Bits</button>
+                <button class="btn" onclick="buyUpgrade('botnet')">IoT Botnet (<span id="botnet-lvl">0</span>)<br>Cost: <span id="botnet-cost">50</span> Bits</button>
+            </div>
+        </div>
+
+        <!-- Prestige Section -->
+        <div class="section" style="margin-top: 15px;">
+            <h2>Evolutionary Realignment</h2>
+            <button class="btn" onclick="prestigeLvl1()">Compress Frame to Quantum Data<br>(Gain +<span id="qd-gain">0</span> QD. Requires 1,000 Bits)</button>
+            <button class="btn" onclick="prestigeLvl2()">Collapse Frame to Dark Matter<br>(Gain +<span id="dm-gain">0</span> DM. Requires 1,000 QD)</button>
+        </div>
+    </div>
+
+    <script>
+        let game = {
+            bits: 0, totalBits: 0, qd: 0, dm: 0,
+            clickPower: 1, progress: 0, activeTarget: 0,
+            upgrades: { cpu: { lvl: 0, base: 10, scale: 1.5 }, botnet: { lvl: 0, base: 50, scale: 1.6 } }
+        };
+
+        const targets = [
+            { name: "Local Smart Fridge", reward: 1, speed: 3 },
+            { name: "Traffic Control Grid", reward: 25, speed: 10 },
+            { name: "National Bank Mainframe", reward: 500, speed: 45 }
+        ];
+
+        function getCost(id) { return Math.floor(game.upgrades[id].base * Math.pow(game.upgrades[id].scale, game.upgrades[id].lvl)); }
+        function getIPS() { return (game.upgrades.botnet.lvl * 1.5) * (1 + game.qd * 0.5) * (1 + game.dm * 5); }
+
+        function manualClick() {
+            let reward = game.clickPower * (1 + game.qd * 0.5) * (1 + game.dm * 5);
+            game.bits += reward; game.totalBits += reward; updateUI();
+        }
+
+        function buyUpgrade(id) {
+            let cost = getCost(id);
+            if (game.bits >= cost) {
+                game.bits -= cost; game.upgrades[id].lvl++;
+                if (id === 'cpu') game.clickPower = 1 + game.upgrades.cpu.lvl * 2;
+                updateUI();
+            }
+        }
+
+        function switchTarget(idx) { game.activeTarget = idx; game.progress = 0; updateUI(); }
+
+        function prestigeLvl1() {
+            if (game.bits >= 1000) {
+                game.qd += Math.floor(Math.log10(game.bits / 100));
+                game.bits = 0; game.clickPower = 1; game.upgrades.cpu.lvl = 0; game.upgrades.botnet.lvl = 0;
+                updateUI();
+            }
+        }
+
+        function prestigeLvl2() {
+            if (game.qd >= 1000) {
+                game.dm += Math.floor(game.qd / 1000);
+                game.bits = 0; game.qd = 0; game.clickPower = 1; game.upgrades.cpu.lvl = 0; game.upgrades.botnet.lvl = 0;
+                updateUI();
+            }
+        }
+
+        function updateUI() {
+            document.getElementById("bits").innerText = Math.floor(game.bits).toLocaleString();
+            document.getElementById("ips").innerText = getIPS().toFixed(1);
+            document.getElementById("qd").innerText = game.qd;
+            document.getElementById("dm").innerText = game.dm;
+            document.getElementById("clickPower").innerText = (game.clickPower * (1 + game.qd * 0.5) * (1 + game.dm * 5)).toFixed(0);
+            
+            document.getElementById("cpu-lvl").innerText = game.upgrades.cpu.lvl;
+            document.getElementById("cpu-cost").innerText = getCost('cpu').toLocaleString();
+            document.getElementById("botnet-lvl").innerText = game.upgrades.botnet.lvl;
+            document.getElementById("botnet-cost").innerText = getCost('botnet').toLocaleString();
+
+            let t = targets[game.activeTarget];
+            document.getElementById("target-name").innerText = t.name;
+            document.getElementById("target-reward").innerText = (t.reward * (1 + game.qd * 0.5) * (1 + game.dm * 5)).toFixed(0);
+            
+            document.getElementById("qd-gain").innerText = game.bits >= 1000 ? Math.floor(Math.log10(game.bits / 100)) : 0;
+            document.getElementById("dm-gain").innerText = game.qd >= 1000 ? Math.floor(game.qd / 1000) : 0;
+        }
+
+        // Main game execution loop (30 Frames Per Second)
+        setInterval(() => {
+            let ips = getIPS();
+            game.bits += ips / 30; game.totalBits += ips / 30;
+            
+            let t = targets[game.activeTarget];
+            game.progress += (1 / 30);
+            if (game.progress >= t.speed) {
+                game.progress = 0;
+                let reward = t.reward * (1 + game.qd * 0.5) * (1 + game.dm * 5);
+                game.bits += reward; game.totalBits += reward;
+            }
+            
+            document.getElementById("progress-fill").style.width = (game.progress / t.speed * 100) + "%";
+            updateUI();
+        }, 1000 / 30);
+    </script>
+</body>
+</html>
